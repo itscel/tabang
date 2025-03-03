@@ -7,6 +7,11 @@ interface TodoContextType {
   addTodo: (title: string) => void; // Adds a new todo
   toggleTodo: (id: string) => void; // Toggles todo completion status
   deleteTodo: (id: string) => void; // Removes a todo
+  // TODO: Add functionality for todo categories/tags
+  // TODO: Add todo priority levels
+  // TODO: Add due dates for todos
+  // TODO: Add todo search and filtering
+  // TODO: Add todo sorting options
 }
 
 // Create context with undefined default value
@@ -19,6 +24,8 @@ export function TodoProvider({ children }: { children: ReactNode }) {
 
   // Add a new todo to the beginning of the list
   const addTodo = (title: string) => {
+    // TODO: Implement backend API integration for creating todos
+    // TODO: Add offline support and data synchronization
     const newTodo: Todo = {
       id: Date.now().toString(), // Generate unique ID
       title,
@@ -30,6 +37,7 @@ export function TodoProvider({ children }: { children: ReactNode }) {
 
   // Toggle the completed status of a todo
   const toggleTodo = (id: string) => {
+    // TODO: Implement backend API integration for updating todo status
     setTodos((prev) =>
       prev.map((todo) =>
         todo.id === id ? { ...todo, completed: !todo.completed } : todo
@@ -39,6 +47,9 @@ export function TodoProvider({ children }: { children: ReactNode }) {
 
   // Remove a todo from the list
   const deleteTodo = (id: string) => {
+    // TODO: Implement backend API integration for deleting todos
+    // TODO: Add confirmation dialog before deletion
+    // TODO: Add undo delete functionality
     setTodos((prev) => prev.filter((todo) => todo.id !== id));
   };
 

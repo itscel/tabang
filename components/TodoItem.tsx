@@ -10,6 +10,11 @@ interface TodoItemProps {
 }
 
 export function TodoItem({ todo, onToggle, onDelete }: TodoItemProps) {
+  // TODO: Add swipe-to-delete/complete gesture
+  // TODO: Add long-press menu for additional actions
+  // TODO: Add animation for completion status change
+  // TODO: Add support for displaying due dates
+  // TODO: Add priority indicator
   return (
     <View style={styles.container}>
       <TouchableOpacity
@@ -35,6 +40,8 @@ export function TodoItem({ todo, onToggle, onDelete }: TodoItemProps) {
           ]}
         >
           {todo.title}
+          {/* TODO: Add support for displaying description */}
+          {/* TODO: Add support for displaying tags */}
         </Text>
       </TouchableOpacity>
 

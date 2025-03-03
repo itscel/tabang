@@ -36,11 +36,12 @@ export default function SignInScreen() {
   const onSubmit = async (data: SignInForm) => {
     setIsLoading(true);
     try {
-      // TODO: Implement your authentication logic here
+      // TODO: Add error handling for invalid credentials
       console.log("Sign in data:", data);
       await new Promise((resolve) => setTimeout(resolve, 1000)); // Simulated API call
-      // router.push("/(app)"); // TODO: Uncomment this line when the app is ready
+      // router.push("/(app)"); // TODO: Implement main app navigation after successful login
     } catch (error) {
+      // TODO: Implement proper error handling and user feedback
       console.error("Sign in error:", error);
     } finally {
       setIsLoading(false);

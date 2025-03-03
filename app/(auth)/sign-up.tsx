@@ -38,10 +38,15 @@ export default function SignUpScreen() {
   const onSubmit = async (data: SignUpForm) => {
     setIsLoading(true);
     try {
+      // TODO: Add email verification functionality
+      // TODO: Implement password strength validation
+      // TODO: Add terms of service acceptance
       console.log("Sign up data:", data);
       await new Promise((resolve) => setTimeout(resolve, 1000)); // Simulated API call
-      //   router.push("/(app)/index"); // TODO: Uncomment later
+      // TODO: Implement automatic sign-in after successful registration
+      //   router.push("/(app)/index");
     } catch (error) {
+      // TODO: Implement proper error handling and user feedback
       console.error("Sign up error:", error);
     } finally {
       setIsLoading(false);
