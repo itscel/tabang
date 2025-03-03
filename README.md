@@ -1,45 +1,42 @@
-# Todo App
+# Task Manager Mobile App
 
-A modern, minimalist Todo application built with React Native, featuring a clean UI inspired by Notion.
+A modern and intuitive task management mobile application built with React Native and Expo.
 
 ## Features
 
-- 📱 Clean, minimalist UI with Notion-inspired design
-- ✨ Smooth animations and transitions
-- ✅ Task completion with animated checkboxes
-- 🗑️ Task deletion with swipe actions
-- 📝 Form validation using Zod
-- 🎨 Styled with NativeWind (Tailwind CSS)
-- 🔒 Authentication flow with sign-in and sign-up
-- ⌨️ Proper keyboard handling
-- 📱 Responsive design
-- 💪 TypeScript for type safety
+- 🎨 Modern and clean UI design
+- 🔐 User authentication (Sign In/Sign Up)
+- ✅ Create, read, update, and delete tasks
+- 📱 Cross-platform (iOS and Android)
+- 🎯 Form validation with Zod
+- 🚀 Navigation with Expo Router
+- 💅 Custom styled components
 
 ## Tech Stack
 
-- React Native with Expo
-- TypeScript
-- NativeWind (Tailwind CSS)
-- React Hook Form
-- Zod for validation
-- Expo Router for navigation
-- Context API for state management
+- [React Native](https://reactnative.dev/) - A framework for building native apps using React
+- [Expo](https://expo.dev/) - A framework and platform for universal React applications
+- [TypeScript](https://www.typescriptlang.org/) - A typed superset of JavaScript
+- [Expo Router](https://docs.expo.dev/routing/introduction/) - File-based routing for Expo apps
+- [React Hook Form](https://react-hook-form.com/) - Forms with easy-to-use validation
+- [Zod](https://github.com/colinhacks/zod) - TypeScript-first schema validation
 
 ## Getting Started
 
 ### Prerequisites
 
-- Node.js (v16 or newer)
+- Node.js (v14 or newer)
 - npm or yarn
 - Expo CLI
-- iOS Simulator (for Mac users) or Android Studio (for Android development)
+- iOS Simulator (Mac only) or Android Emulator
+- Expo Go app on your mobile device (optional)
 
 ### Installation
 
 1. Clone the repository:
 
 ```bash
-git clone <repository-url>
+git clone [repository-url]
 cd todo-app
 ```
 
@@ -47,65 +44,46 @@ cd todo-app
 
 ```bash
 npm install
+# or
+yarn install
 ```
 
 3. Start the development server:
 
 ```bash
-npm start
+npx expo start
 ```
 
-4. Run on your preferred platform:
+4. Run on your desired platform:
 
-- Press `i` for iOS simulator
-- Press `a` for Android emulator
-- Scan QR code with Expo Go app for physical device
+- Press 'i' for iOS Simulator
+- Press 'a' for Android Emulator
+- Scan the QR code with Expo Go (iOS/Android)
 
 ## Project Structure
 
 ```
-todo_app/
-├── app/                    # App screens and navigation
-│   ├── (app)/             # Authenticated screens
-│   ├── (auth)/            # Authentication screens
-│   └── _layout.tsx        # Root layout
+todo-app/
+├── app/                    # Main application code
+│   ├── (app)/             # App routes
+│   ├── (auth)/            # Authentication routes
+│   └── index.tsx          # Entry point (Onboarding)
 ├── components/            # Reusable components
-├── contexts/             # Context providers
-├── types/               # TypeScript types
-└── README.md
+├── contexts/             # React Context providers
+├── assets/              # Images, fonts, etc.
+└── package.json         # Project dependencies
 ```
-
-## Features in Detail
-
-### Authentication
-
-- Sign in with email and password
-- Sign up with name, email, and password
-- Form validation with error messages
-- Loading states during authentication
-
-### Todo Management
-
-- Add new tasks
-- Mark tasks as complete/incomplete
-- Delete tasks
-- Task counter in header
-- Smooth animations for task interactions
-
-### UI/UX
-
-- Clean, minimalist design
-- Responsive keyboard handling
-- Smooth transitions and animations
-- Error states and loading indicators
-- Modern typography and spacing
 
 ## Contributing
 
-Feel free to submit issues and pull requests.
+1. Fork the repository
+2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to the branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
 
 ## License
 
-MIT License
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
 # todo-app

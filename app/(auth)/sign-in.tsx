@@ -5,12 +5,15 @@ import {
   TouchableOpacity,
   ActivityIndicator,
   StyleSheet,
+  TextInput,
+  KeyboardAvoidingView,
+  Platform,
 } from "react-native";
-import { useForm } from "react-hook-form";
+import { useForm, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { Link, router } from "expo-router";
-import { FormInput } from "../../components/FormInput";
+import { Link, useRouter } from "expo-router";
+import { StatusBar } from "expo-status-bar";
 
 const signInSchema = z.object({
   email: z.string().email("Please enter a valid email"),
@@ -19,7 +22,7 @@ const signInSchema = z.object({
 
 type SignInForm = z.infer<typeof signInSchema>;
 
-export default function SignIn() {
+export default function SignInScreen() {
   const [isLoading, setIsLoading] = useState(false);
   const { control, handleSubmit } = useForm<SignInForm>({
     resolver: zodResolver(signInSchema),
@@ -28,6 +31,7 @@ export default function SignIn() {
       password: "",
     },
   });
+  const router = useRouter();
 
   const onSubmit = async (data: SignInForm) => {
     setIsLoading(true);
@@ -35,7 +39,7 @@ export default function SignIn() {
       // TODO: Implement your authentication logic here
       console.log("Sign in data:", data);
       await new Promise((resolve) => setTimeout(resolve, 1000)); // Simulated API call
-      router.replace("/(app)");
+      // router.push("/(app)"); // TODO: Uncomment this line when the app is ready
     } catch (error) {
       console.error("Sign in error:", error);
     } finally {
@@ -44,92 +48,171 @@ export default function SignIn() {
   };
 
   return (
-    <View style={styles.container}>
+    <KeyboardAvoidingView
+      behavior={Platform.OS === "ios" ? "padding" : "height"}
+      style={styles.container}
+    >
+      <StatusBar style="dark" />
       <View style={styles.content}>
-        <Text style={styles.title}>Welcome back</Text>
+        <View style={styles.header}>
+          <Text style={styles.title}>Welcome Back</Text>
+          <Text style={styles.subtitle}>
+            Sign in to continue managing your tasks
+          </Text>
+        </View>
 
-        <FormInput
-          control={control}
-          name="email"
-          label="Email"
-          placeholder="Enter your email"
-          keyboardType="email-address"
-          autoCapitalize="none"
-        />
+        <View style={styles.form}>
+          <View style={styles.inputContainer}>
+            <Text style={styles.label}>Email</Text>
+            <Controller
+              control={control}
+              name="email"
+              render={({ field: { onChange, value } }) => (
+                <TextInput
+                  style={styles.input}
+                  placeholder="Enter your email"
+                  placeholderTextColor="#94A3B8"
+                  value={value}
+                  onChangeText={onChange}
+                  keyboardType="email-address"
+                  autoCapitalize="none"
+                />
+              )}
+            />
+          </View>
 
-        <FormInput
-          control={control}
-          name="password"
-          label="Password"
-          placeholder="Enter your password"
-          secureTextEntry
-        />
+          <View style={styles.inputContainer}>
+            <Text style={styles.label}>Password</Text>
+            <Controller
+              control={control}
+              name="password"
+              render={({ field: { onChange, value } }) => (
+                <TextInput
+                  style={styles.input}
+                  placeholder="Enter your password"
+                  placeholderTextColor="#94A3B8"
+                  value={value}
+                  onChangeText={onChange}
+                  secureTextEntry
+                />
+              )}
+            />
+          </View>
 
-        <TouchableOpacity
-          onPress={handleSubmit(onSubmit)}
-          disabled={isLoading}
-          style={[styles.button, isLoading && styles.buttonDisabled]}
-        >
-          {isLoading ? (
-            <ActivityIndicator color="white" />
-          ) : (
-            <Text style={styles.buttonText}>Sign In</Text>
-          )}
-        </TouchableOpacity>
+          <TouchableOpacity
+            style={styles.button}
+            onPress={handleSubmit(onSubmit)}
+            disabled={isLoading}
+          >
+            {isLoading ? (
+              <ActivityIndicator color="white" />
+            ) : (
+              <Text style={styles.buttonText}>Sign In</Text>
+            )}
+          </TouchableOpacity>
 
-        <View style={styles.footer}>
-          <Text style={styles.footerText}>Don't have an account? </Text>
-          <Link href="/(auth)/sign-up" style={styles.link}>
-            Sign Up
-          </Link>
+          <View style={styles.footer}>
+            <Text style={styles.footerText}>Don't have an account? </Text>
+            <Link href="/(auth)/sign-up" style={styles.link}>
+              Sign Up
+            </Link>
+          </View>
         </View>
       </View>
-    </View>
+    </KeyboardAvoidingView>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "white",
-    padding: 24,
+    backgroundColor: "#ffffff",
   },
   content: {
     flex: 1,
     justifyContent: "center",
+    paddingHorizontal: 24,
+    paddingBottom: 40,
+  },
+  header: {
+    alignItems: "center",
+    marginBottom: 40,
   },
   title: {
-    fontSize: 32,
+    fontSize: 36,
     fontWeight: "bold",
-    color: "#111827",
-    marginBottom: 32,
+    color: "#1E293B",
+    marginBottom: 12,
+  },
+  subtitle: {
+    fontSize: 16,
+    color: "#64748B",
+    lineHeight: 24,
+    textAlign: "center",
+    maxWidth: "80%",
+  },
+  form: {
+    width: "100%",
+  },
+  inputContainer: {
+    marginBottom: 24,
+  },
+  label: {
+    fontSize: 15,
+    fontWeight: "600",
+    color: "#1E293B",
+    marginBottom: 8,
+    marginLeft: 4,
+  },
+  input: {
+    backgroundColor: "#F8FAFC",
+    borderRadius: 12,
+    padding: 16,
+    fontSize: 16,
+    color: "#1E293B",
+    borderWidth: 1,
+    borderColor: "#E2E8F0",
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 1,
+    },
+    shadowOpacity: 0.05,
+    shadowRadius: 1,
+    elevation: 1,
   },
   button: {
-    marginTop: 24,
-    borderRadius: 8,
-    paddingVertical: 16,
-    paddingHorizontal: 24,
     backgroundColor: "#3B82F6",
-  },
-  buttonDisabled: {
-    backgroundColor: "#60A5FA",
+    padding: 18,
+    borderRadius: 12,
+    marginTop: 16,
+    shadowColor: "#3B82F6",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.15,
+    shadowRadius: 3,
+    elevation: 3,
   },
   buttonText: {
-    color: "white",
+    color: "#ffffff",
+    fontSize: 16,
+    fontWeight: "700",
     textAlign: "center",
-    fontWeight: "600",
-    fontSize: 18,
   },
   footer: {
     flexDirection: "row",
     justifyContent: "center",
-    marginTop: 24,
+    marginTop: 32,
   },
   footerText: {
-    color: "#4B5563",
+    color: "#64748B",
+    fontSize: 15,
   },
   link: {
     color: "#3B82F6",
     fontWeight: "600",
+    fontSize: 15,
   },
 });
