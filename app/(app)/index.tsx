@@ -7,6 +7,7 @@ import {
   FlatList,
   KeyboardAvoidingView,
   Platform,
+  StyleSheet,
 } from "react-native";
 import { Stack } from "expo-router";
 import { Ionicons } from "@expo/vector-icons";
@@ -30,17 +31,15 @@ export default function Home() {
         options={{
           title: "My Tasks",
           headerRight: () => (
-            <Text className="text-sm font-medium text-gray-500">
-              {todos.length} tasks
-            </Text>
+            <Text style={styles.taskCount}>{todos.length} tasks</Text>
           ),
         }}
       />
       <KeyboardAvoidingView
         behavior={Platform.OS === "ios" ? "padding" : "height"}
-        className="flex-1"
+        style={styles.container}
       >
-        <View className="flex-1 bg-gray-50 p-4">
+        <View style={styles.container}>
           <FlatList
             data={todos}
             keyExtractor={(item) => item.id}
@@ -55,22 +54,23 @@ export default function Home() {
             showsVerticalScrollIndicator={false}
           />
 
-          <View className="absolute bottom-4 left-4 right-4">
-            <View className="flex-row items-center bg-white rounded-lg border border-gray-200 p-2">
+          <View style={styles.inputContainer}>
+            <View style={styles.inputWrapper}>
               <TextInput
                 value={newTodo}
                 onChangeText={setNewTodo}
                 placeholder="Add a new task..."
-                className="flex-1 text-base px-2"
+                style={styles.input}
                 returnKeyType="done"
                 onSubmitEditing={handleAddTodo}
               />
               <TouchableOpacity
                 onPress={handleAddTodo}
                 disabled={!newTodo.trim()}
-                className={`p-2 rounded-lg ${
-                  newTodo.trim() ? "bg-blue-500" : "bg-gray-300"
-                }`}
+                style={[
+                  styles.addButton,
+                  { backgroundColor: newTodo.trim() ? "#3B82F6" : "#D1D5DB" },
+                ]}
               >
                 <Ionicons name="add" size={24} color="white" />
               </TouchableOpacity>
@@ -81,3 +81,40 @@ export default function Home() {
     </>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: "#F9FAFB",
+    padding: 16,
+  },
+  taskCount: {
+    fontSize: 14,
+    fontWeight: "500",
+    color: "#6B7280",
+  },
+  inputContainer: {
+    position: "absolute",
+    bottom: 16,
+    left: 16,
+    right: 16,
+  },
+  inputWrapper: {
+    flexDirection: "row",
+    alignItems: "center",
+    backgroundColor: "white",
+    borderRadius: 8,
+    borderWidth: 1,
+    borderColor: "#E5E7EB",
+    padding: 8,
+  },
+  input: {
+    flex: 1,
+    fontSize: 16,
+    paddingHorizontal: 8,
+  },
+  addButton: {
+    padding: 8,
+    borderRadius: 8,
+  },
+});
