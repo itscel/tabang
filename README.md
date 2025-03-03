@@ -107,4 +107,5 @@ Feel free to submit issues and pull requests.
 ## License
 
 MIT License
+
 # todo-app
