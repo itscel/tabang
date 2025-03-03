@@ -1,5 +1,11 @@
 import React from "react";
-import { Text, TextInput, View, TextInputProps } from "react-native";
+import {
+  Text,
+  TextInput,
+  View,
+  TextInputProps,
+  StyleSheet,
+} from "react-native";
 import { Control, Controller, FieldValues, Path } from "react-hook-form";
 
 interface FormInputProps<T extends FieldValues>
@@ -22,25 +28,53 @@ export function FormInput<T extends FieldValues>({
       control={control}
       name={name}
       render={({ field: { value, onChange }, fieldState: { error } }) => (
-        <View className="mb-4">
-          <Text className="text-sm font-medium text-gray-700 mb-1">
-            {label}
-          </Text>
+        <View style={styles.container}>
+          <Text style={styles.label}>{label}</Text>
           <TextInput
             value={value}
             onChangeText={onChange}
             placeholder={placeholder}
             secureTextEntry={secureTextEntry}
-            className={`w-full px-4 py-3 rounded-lg bg-white border ${
-              error ? "border-red-500" : "border-gray-200"
-            } focus:border-blue-500`}
+            style={[
+              styles.input,
+              error ? styles.inputError : styles.inputDefault,
+            ]}
             {...props}
           />
-          {error && (
-            <Text className="mt-1 text-xs text-red-500">{error.message}</Text>
-          )}
+          {error && <Text style={styles.errorText}>{error.message}</Text>}
         </View>
       )}
     />
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    marginBottom: 16,
+  },
+  label: {
+    fontSize: 14,
+    fontWeight: "500",
+    color: "#374151",
+    marginBottom: 4,
+  },
+  input: {
+    width: "100%",
+    paddingHorizontal: 16,
+    paddingVertical: 12,
+    borderRadius: 8,
+    backgroundColor: "white",
+    borderWidth: 1,
+  },
+  inputDefault: {
+    borderColor: "#E5E7EB",
+  },
+  inputError: {
+    borderColor: "#EF4444",
+  },
+  errorText: {
+    marginTop: 4,
+    fontSize: 12,
+    color: "#EF4444",
+  },
+});

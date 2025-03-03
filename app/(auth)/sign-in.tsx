@@ -1,5 +1,11 @@
 import React, { useState } from "react";
-import { View, Text, TouchableOpacity, ActivityIndicator } from "react-native";
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  ActivityIndicator,
+  StyleSheet,
+} from "react-native";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
@@ -38,11 +44,9 @@ export default function SignIn() {
   };
 
   return (
-    <View className="flex-1 bg-white p-6">
-      <View className="flex-1 justify-center">
-        <Text className="text-3xl font-bold text-gray-900 mb-8">
-          Welcome back
-        </Text>
+    <View style={styles.container}>
+      <View style={styles.content}>
+        <Text style={styles.title}>Welcome back</Text>
 
         <FormInput
           control={control}
@@ -64,22 +68,18 @@ export default function SignIn() {
         <TouchableOpacity
           onPress={handleSubmit(onSubmit)}
           disabled={isLoading}
-          className={`mt-6 rounded-lg py-4 px-6 ${
-            isLoading ? "bg-blue-400" : "bg-blue-500"
-          }`}
+          style={[styles.button, isLoading && styles.buttonDisabled]}
         >
           {isLoading ? (
             <ActivityIndicator color="white" />
           ) : (
-            <Text className="text-white text-center font-semibold text-lg">
-              Sign In
-            </Text>
+            <Text style={styles.buttonText}>Sign In</Text>
           )}
         </TouchableOpacity>
 
-        <View className="flex-row justify-center mt-6">
-          <Text className="text-gray-600">Don't have an account? </Text>
-          <Link href="/(auth)/sign-up" className="text-blue-500 font-semibold">
+        <View style={styles.footer}>
+          <Text style={styles.footerText}>Don't have an account? </Text>
+          <Link href="/(auth)/sign-up" style={styles.link}>
             Sign Up
           </Link>
         </View>
@@ -87,3 +87,49 @@ export default function SignIn() {
     </View>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: "white",
+    padding: 24,
+  },
+  content: {
+    flex: 1,
+    justifyContent: "center",
+  },
+  title: {
+    fontSize: 32,
+    fontWeight: "bold",
+    color: "#111827",
+    marginBottom: 32,
+  },
+  button: {
+    marginTop: 24,
+    borderRadius: 8,
+    paddingVertical: 16,
+    paddingHorizontal: 24,
+    backgroundColor: "#3B82F6",
+  },
+  buttonDisabled: {
+    backgroundColor: "#60A5FA",
+  },
+  buttonText: {
+    color: "white",
+    textAlign: "center",
+    fontWeight: "600",
+    fontSize: 18,
+  },
+  footer: {
+    flexDirection: "row",
+    justifyContent: "center",
+    marginTop: 24,
+  },
+  footerText: {
+    color: "#4B5563",
+  },
+  link: {
+    color: "#3B82F6",
+    fontWeight: "600",
+  },
+});

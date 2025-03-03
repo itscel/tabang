@@ -1,12 +1,19 @@
 import React from "react";
-import { TouchableOpacity, Text, ActivityIndicator } from "react-native";
+import {
+  TouchableOpacity,
+  Text,
+  ActivityIndicator,
+  StyleSheet,
+  ViewStyle,
+  TextStyle,
+} from "react-native";
 
 interface ButtonProps {
   onPress: () => void;
   title: string;
   isLoading?: boolean;
   variant?: "primary" | "secondary";
-  className?: string;
+  style?: ViewStyle;
 }
 
 export const Button = ({
@@ -14,31 +21,50 @@ export const Button = ({
   title,
   isLoading = false,
   variant = "primary",
-  className = "",
+  style,
 }: ButtonProps) => {
-  const baseStyle = "w-full py-3 rounded-lg items-center justify-center";
-  const variantStyles = {
-    primary: "bg-primary",
-    secondary: "bg-gray-100",
-  };
-  const textStyles = {
-    primary: "text-white font-semibold",
-    secondary: "text-gray-700 font-semibold",
-  };
+  const variantStyle =
+    variant === "primary" ? styles.primary : styles.secondary;
+  const textStyle =
+    variant === "primary" ? styles.primaryText : styles.secondaryText;
 
   return (
     <TouchableOpacity
       onPress={onPress}
       disabled={isLoading}
-      className={`${baseStyle} ${variantStyles[variant]} ${className}`}
+      style={[styles.base, variantStyle, style]}
     >
       {isLoading ? (
         <ActivityIndicator
           color={variant === "primary" ? "white" : "#4B5563"}
         />
       ) : (
-        <Text className={textStyles[variant]}>{title}</Text>
+        <Text style={textStyle}>{title}</Text>
       )}
     </TouchableOpacity>
   );
 };
+
+const styles = StyleSheet.create({
+  base: {
+    width: "100%",
+    paddingVertical: 12,
+    borderRadius: 8,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  primary: {
+    backgroundColor: "#0EA5E9", // Assuming this is your primary color
+  },
+  secondary: {
+    backgroundColor: "#F3F4F6",
+  },
+  primaryText: {
+    color: "white",
+    fontWeight: "600",
+  },
+  secondaryText: {
+    color: "#374151",
+    fontWeight: "600",
+  },
+});
