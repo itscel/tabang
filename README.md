@@ -1,50 +1,110 @@
-# Welcome to your Expo app 👋
+# Todo App
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+A modern, minimalist Todo application built with React Native, featuring a clean UI inspired by Notion.
 
-## Get started
+## Features
 
-1. Install dependencies
+- 📱 Clean, minimalist UI with Notion-inspired design
+- ✨ Smooth animations and transitions
+- ✅ Task completion with animated checkboxes
+- 🗑️ Task deletion with swipe actions
+- 📝 Form validation using Zod
+- 🎨 Styled with NativeWind (Tailwind CSS)
+- 🔒 Authentication flow with sign-in and sign-up
+- ⌨️ Proper keyboard handling
+- 📱 Responsive design
+- 💪 TypeScript for type safety
 
-   ```bash
-   npm install
-   ```
+## Tech Stack
 
-2. Start the app
+- React Native with Expo
+- TypeScript
+- NativeWind (Tailwind CSS)
+- React Hook Form
+- Zod for validation
+- Expo Router for navigation
+- Context API for state management
 
-   ```bash
-    npx expo start
-   ```
+## Getting Started
 
-In the output, you'll find options to open the app in a
+### Prerequisites
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
+- Node.js (v16 or newer)
+- npm or yarn
+- Expo CLI
+- iOS Simulator (for Mac users) or Android Studio (for Android development)
 
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
+### Installation
 
-## Get a fresh project
-
-When you're ready, run:
+1. Clone the repository:
 
 ```bash
-npm run reset-project
+git clone <repository-url>
+cd todo-app
 ```
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+2. Install dependencies:
 
-## Learn more
+```bash
+npm install
+```
 
-To learn more about developing your project with Expo, look at the following resources:
+3. Start the development server:
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
+```bash
+npm start
+```
 
-## Join the community
+4. Run on your preferred platform:
 
-Join our community of developers creating universal apps.
+- Press `i` for iOS simulator
+- Press `a` for Android emulator
+- Scan QR code with Expo Go app for physical device
 
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+## Project Structure
+
+```
+todo_app/
+├── app/                    # App screens and navigation
+│   ├── (app)/             # Authenticated screens
+│   ├── (auth)/            # Authentication screens
+│   └── _layout.tsx        # Root layout
+├── components/            # Reusable components
+├── contexts/             # Context providers
+├── types/               # TypeScript types
+└── README.md
+```
+
+## Features in Detail
+
+### Authentication
+
+- Sign in with email and password
+- Sign up with name, email, and password
+- Form validation with error messages
+- Loading states during authentication
+
+### Todo Management
+
+- Add new tasks
+- Mark tasks as complete/incomplete
+- Delete tasks
+- Task counter in header
+- Smooth animations for task interactions
+
+### UI/UX
+
+- Clean, minimalist design
+- Responsive keyboard handling
+- Smooth transitions and animations
+- Error states and loading indicators
+- Modern typography and spacing
+
+## Contributing
+
+Feel free to submit issues and pull requests.
+
+## License
+
+MIT License
+# todo-app
