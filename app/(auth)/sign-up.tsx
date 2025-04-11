@@ -43,8 +43,7 @@ export default function SignUpScreen() {
       // TODO: Add terms of service acceptance
       console.log("Sign up data:", data);
       await new Promise((resolve) => setTimeout(resolve, 1000)); // Simulated API call
-      // TODO: Implement automatic sign-in after successful registration
-      //   router.push("/(app)/index");
+      router.push("/(tabs)"); // Navigate to main page after successful registration
     } catch (error) {
       // TODO: Implement proper error handling and user feedback
       console.error("Sign up error:", error);

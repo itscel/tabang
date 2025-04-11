@@ -39,7 +39,7 @@ export default function SignInScreen() {
       // TODO: Add error handling for invalid credentials
       console.log("Sign in data:", data);
       await new Promise((resolve) => setTimeout(resolve, 1000)); // Simulated API call
-      // router.push("/(app)"); // TODO: Implement main app navigation after successful login
+      router.push("/(tabs)");  // Navigate to main page after successful login
     } catch (error) {
       // TODO: Implement proper error handling and user feedback
       console.error("Sign in error:", error);
