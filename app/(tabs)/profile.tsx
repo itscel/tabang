@@ -1,14 +1,26 @@
 import React from "react";
-import { Image, View, Text, StyleSheet, TouchableOpacity, SafeAreaView, StatusBar } from "react-native";
+import { Image, View, Text, StyleSheet, TouchableOpacity, SafeAreaView, StatusBar, Alert } from "react-native";
 import { useRouter } from "expo-router";
 import { Ionicons } from "@expo/vector-icons";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export default function ProfileScreen() {
   const router = useRouter();
 
-  const handleSignOut = () => {
-    console.log("Sign out action");
-    // Add your sign out logic here
+  const handleSignOut = async () => {
+    try {
+      // Clear any stored authentication data
+      await AsyncStorage.removeItem("userToken");
+      await AsyncStorage.removeItem("userData");
+      
+      console.log("User signed out successfully");
+      
+      // Redirect to sign-in screen
+      router.replace("/(auth)/sign-in");
+    } catch (error) {
+      console.error("Error signing out:", error);
+      Alert.alert("Error", "Failed to sign out. Please try again.");
+    }
   };
 
   return (
@@ -93,7 +105,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#3B82F6",
     padding: 18,
     borderRadius: 12,
-    margin:20,
+    margin: 20,
     shadowColor: "#3B82F6",
     shadowOffset: {
       width: 0,

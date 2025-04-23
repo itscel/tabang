@@ -8,12 +8,14 @@ import {
   TextInput,
   KeyboardAvoidingView,
   Platform,
+  Alert,
 } from "react-native";
 import { useForm, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { Link, useRouter } from "expo-router";
 import { StatusBar } from "expo-status-bar";
+import { useAuth } from "../../contexts/AuthContext";
 
 const signInSchema = z.object({
   email: z.string().email("Please enter a valid email"),
@@ -24,7 +26,13 @@ type SignInForm = z.infer<typeof signInSchema>;
 
 export default function SignInScreen() {
   const [isLoading, setIsLoading] = useState(false);
-  const { control, handleSubmit } = useForm<SignInForm>({
+  const [error, setError] = useState<string | null>(null);
+  const { signIn } = useAuth();
+  const {
+    control,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<SignInForm>({
     resolver: zodResolver(signInSchema),
     defaultValues: {
       email: "",
@@ -35,14 +43,17 @@ export default function SignInScreen() {
 
   const onSubmit = async (data: SignInForm) => {
     setIsLoading(true);
+    setError(null);
     try {
-      // TODO: Add error handling for invalid credentials
-      console.log("Sign in data:", data);
-      await new Promise((resolve) => setTimeout(resolve, 1000)); // Simulated API call
-      router.push("/(tabs)");  // Navigate to main page after successful login
-    } catch (error) {
-      // TODO: Implement proper error handling and user feedback
-      console.error("Sign in error:", error);
+      await signIn(data.email, data.password);
+      router.replace("/(tabs)"); // Navigate to main page after successful login
+    } catch (err) {
+      if (err instanceof Error) {
+        setError(err.message);
+      } else {
+        setError("Failed to sign in. Please check your credentials.");
+      }
+      Alert.alert("Sign In Failed", error || "Please check your credentials and try again.");
     } finally {
       setIsLoading(false);
     }
@@ -80,6 +91,9 @@ export default function SignInScreen() {
                 />
               )}
             />
+            {errors.email && (
+              <Text style={styles.errorText}>{errors.email.message}</Text>
+            )}
           </View>
 
           <View style={styles.inputContainer}>
@@ -98,7 +112,12 @@ export default function SignInScreen() {
                 />
               )}
             />
+            {errors.password && (
+              <Text style={styles.errorText}>{errors.password.message}</Text>
+            )}
           </View>
+
+          {error && <Text style={styles.errorText}>{error}</Text>}
 
           <TouchableOpacity
             style={styles.button}
@@ -215,5 +234,11 @@ const styles = StyleSheet.create({
     color: "#3B82F6",
     fontWeight: "600",
     fontSize: 15,
+  },
+  errorText: {
+    color: "#EF4444",
+    fontSize: 14,
+    marginTop: 4,
+    marginLeft: 4,
   },
 });
