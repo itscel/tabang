@@ -8,46 +8,63 @@ import {
   TextInput,
   KeyboardAvoidingView,
   Platform,
+  Alert,
 } from "react-native";
 import { useForm, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { Link, useRouter } from "expo-router";
 import { StatusBar } from "expo-status-bar";
+import { useAuth } from "../../contexts/AuthContext";
 
-const signUpSchema = z.object({
-  name: z.string().min(2, "Name must be at least 2 characters"),
-  email: z.string().email("Please enter a valid email"),
-  password: z.string().min(6, "Password must be at least 6 characters"),
-});
+const signUpSchema = z
+  .object({
+    firstName: z.string().min(2, "First name must be at least 2 characters"),
+    lastName: z.string().min(2, "Last name must be at least 2 characters"),
+    email: z.string().email("Please enter a valid email"),
+    password: z.string().min(6, "Password must be at least 6 characters"),
+    confirmPassword: z.string().min(6, "Password must be at least 6 characters"),
+  })
+  .refine((data) => data.password === data.confirmPassword, {
+    message: "Passwords do not match",
+    path: ["confirmPassword"],
+  });
 
 type SignUpForm = z.infer<typeof signUpSchema>;
 
 export default function SignUpScreen() {
   const [isLoading, setIsLoading] = useState(false);
-  const { control, handleSubmit } = useForm<SignUpForm>({
+  const [error, setError] = useState<string | null>(null);
+  const { signUp } = useAuth();
+  const {
+    control,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<SignUpForm>({
     resolver: zodResolver(signUpSchema),
     defaultValues: {
-      name: "",
+      firstName: "",
+      lastName: "",
       email: "",
       password: "",
+      confirmPassword: "",
     },
   });
   const router = useRouter();
 
   const onSubmit = async (data: SignUpForm) => {
     setIsLoading(true);
+    setError(null);
     try {
-      // TODO: Add email verification functionality
-      // TODO: Implement password strength validation
-      // TODO: Add terms of service acceptance
-      console.log("Sign up data:", data);
-      await new Promise((resolve) => setTimeout(resolve, 1000)); // Simulated API call
-      // TODO: Implement automatic sign-in after successful registration
-      //   router.push("/(app)/index");
-    } catch (error) {
-      // TODO: Implement proper error handling and user feedback
-      console.error("Sign up error:", error);
+      await signUp(data.firstName, data.lastName, data.email, data.password);
+      router.replace("/(tabs)"); // Navigate to main page after successful registration
+    } catch (err) {
+      if (err instanceof Error) {
+        setError(err.message);
+      } else {
+        setError("Failed to sign up. Please try again.");
+      }
+      Alert.alert("Sign Up Failed", error || "Please try again with different credentials.");
     } finally {
       setIsLoading(false);
     }
@@ -69,14 +86,14 @@ export default function SignUpScreen() {
 
         <View style={styles.form}>
           <View style={styles.inputContainer}>
-            <Text style={styles.label}>Full Name</Text>
+            <Text style={styles.label}>First Name</Text>
             <Controller
               control={control}
-              name="name"
+              name="firstName"
               render={({ field: { onChange, value } }) => (
                 <TextInput
                   style={styles.input}
-                  placeholder="Enter your full name"
+                  placeholder="Enter your first name"
                   placeholderTextColor="#94A3B8"
                   value={value}
                   onChangeText={onChange}
@@ -84,6 +101,30 @@ export default function SignUpScreen() {
                 />
               )}
             />
+            {errors.firstName && (
+              <Text style={styles.errorText}>{errors.firstName.message}</Text>
+            )}
+          </View>
+
+          <View style={styles.inputContainer}>
+            <Text style={styles.label}>Last Name</Text>
+            <Controller
+              control={control}
+              name="lastName"
+              render={({ field: { onChange, value } }) => (
+                <TextInput
+                  style={styles.input}
+                  placeholder="Enter your last name"
+                  placeholderTextColor="#94A3B8"
+                  value={value}
+                  onChangeText={onChange}
+                  autoCapitalize="words"
+                />
+              )}
+            />
+            {errors.lastName && (
+              <Text style={styles.errorText}>{errors.lastName.message}</Text>
+            )}
           </View>
 
           <View style={styles.inputContainer}>
@@ -103,6 +144,9 @@ export default function SignUpScreen() {
                 />
               )}
             />
+            {errors.email && (
+              <Text style={styles.errorText}>{errors.email.message}</Text>
+            )}
           </View>
 
           <View style={styles.inputContainer}>
@@ -121,7 +165,33 @@ export default function SignUpScreen() {
                 />
               )}
             />
+            {errors.password && (
+              <Text style={styles.errorText}>{errors.password.message}</Text>
+            )}
           </View>
+
+          <View style={styles.inputContainer}>
+            <Text style={styles.label}>Confirm Password</Text>
+            <Controller
+              control={control}
+              name="confirmPassword"
+              render={({ field: { onChange, value } }) => (
+                <TextInput
+                  style={styles.input}
+                  placeholder="Confirm your password"
+                  placeholderTextColor="#94A3B8"
+                  value={value}
+                  onChangeText={onChange}
+                  secureTextEntry
+                />
+              )}
+            />
+            {errors.confirmPassword && (
+              <Text style={styles.errorText}>{errors.confirmPassword.message}</Text>
+            )}
+          </View>
+
+          {error && <Text style={styles.errorText}>{error}</Text>}
 
           <TouchableOpacity
             style={styles.button}
@@ -179,7 +249,7 @@ const styles = StyleSheet.create({
     width: "100%",
   },
   inputContainer: {
-    marginBottom: 24,
+    marginBottom: 16,
   },
   label: {
     fontSize: 15,
@@ -238,5 +308,11 @@ const styles = StyleSheet.create({
     color: "#3B82F6",
     fontWeight: "600",
     fontSize: 15,
+  },
+  errorText: {
+    color: "#EF4444",
+    fontSize: 14,
+    marginTop: 4,
+    marginLeft: 4,
   },
 });

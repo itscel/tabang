@@ -1,6 +1,7 @@
 export interface Todo {
   id: string;
   title: string;
+  description?: string;
   completed: boolean;
   createdAt: Date;
   // TODO: Add support for the following fields:
@@ -15,5 +16,6 @@ export interface Todo {
 
 export interface TodoFormData {
   title: string;
+  description: string;
   // TODO: Add form fields for enhanced todo features
 }
